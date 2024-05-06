@@ -25,7 +25,9 @@
 
           inherit (pkgs) lib;
 
-          rustToolchain = pkgs.rust-bin.nightly.latest.default;
+          rustToolchain = pkgs.rust-bin.selectLatestNightlyWith (toolchain: toolchain.default.override {
+            extensions = [ "rust-src" "rust-analyzer" ];
+          });
           craneLib = (crane.mkLib pkgs).overrideToolchain rustToolchain;
         in
         {
@@ -44,15 +46,15 @@
             default = pkgs.writeShellApplication {
               name = "run-with-loaded-libary";
               text = ''
-                RUST_LOG=debug ${pkgs.lib.getExe host} ${module}/lib/libdylib.so
+                RUST_LOG=debug ${lib.getExe host} ${module}/lib/libdylib.so
               '';
             };
           };
 
           devShells.default = pkgs.makeShell {
             name = "devshell";
-            buildInputs = [ pkgs.rust-bin.nightly.latest.default ];
-            RUST_SRC_PATH = "${pkgs.rust-bin.nightly.latest.default}/lib/rustlib/src/rust/library";
+            buildInputs = [ rustToolchain ];
+            RUST_SRC_PATH = "${rustToolchain}/lib/rustlib/src/rust/library";
           };
         };
       flake = {
