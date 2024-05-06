@@ -1,4 +1,7 @@
-use std::{ffi::CString, path::PathBuf};
+use std::{
+    ffi::{c_char, CString},
+    path::PathBuf,
+};
 
 use async_ffi::FfiFuture;
 use libloading::{Library, Symbol};
@@ -13,7 +16,7 @@ async fn main() {
 
     unsafe {
         let lib = Library::new(path).unwrap();
-        let add: Symbol<unsafe extern "C" fn(left: usize, right: usize) -> FfiFuture<*mut u8>> =
+        let add: Symbol<unsafe extern "C" fn(left: usize, right: usize) -> FfiFuture<*mut c_char>> =
             lib.get(b"add").unwrap();
 
         let set = LocalSet::new();

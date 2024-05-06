@@ -1,6 +1,9 @@
 #![feature(lazy_cell)]
 
-use std::{ffi::CString, sync::LazyLock};
+use std::{
+    ffi::{c_char, CString},
+    sync::LazyLock,
+};
 
 use async_ffi::async_ffi;
 
@@ -26,7 +29,7 @@ static RUNTIME: LazyLock<tokio::runtime::Runtime> = LazyLock::new(|| {
 
 #[async_ffi]
 #[no_mangle]
-pub async extern "C" fn add(left: usize, right: usize) -> *mut u8 {
+pub async extern "C" fn add(left: usize, right: usize) -> *mut c_char {
     RUNTIME
         .handle()
         .spawn(async {

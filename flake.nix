@@ -46,7 +46,7 @@
             default = pkgs.writeShellApplication {
               name = "run-with-loaded-libary";
               text = ''
-                RUST_LOG=debug ${lib.getExe host} ${module}/lib/libdylib.so
+                RUST_LOG=debug ${lib.getExe host} ${module}/lib/libdylib.${if pkgs.stdenv.isLinux then "so" else if pkgs.stdenv.isDarwin then "dylib" else throw "???"}
               '';
             };
           };
