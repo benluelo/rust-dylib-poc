@@ -51,7 +51,7 @@
             };
           };
 
-          devShells.default = pkgs.makeShell {
+          devShells.default = pkgs.mkShell {
             name = "devshell";
             buildInputs = [ rustToolchain ];
             RUST_SRC_PATH = "${rustToolchain}/lib/rustlib/src/rust/library";
