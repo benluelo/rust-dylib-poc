@@ -42,6 +42,7 @@
             # system.
 
             default = pkgs.writeShellApplication {
+              name = "run-with-loaded-libary";
               text = ''
                 RUST_LOG=debug ${pkgs.lib.getExe host} ${module}/lib/libdylib.so
               '';
