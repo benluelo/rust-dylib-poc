@@ -48,6 +48,12 @@
               '';
             };
           };
+
+          devShells.default = pkgs.makeShell {
+            name = "devshell";
+            buildInputs = [ pkgs.rust-bin.nightly.latest.default ];
+            RUST_SRC_PATH = "${pkgs.rust-bin.nightly.latest.default}/lib/rustlib/src/rust/library";
+          };
         };
       flake = {
         # The usual flake attributes can be defined here, including system-
